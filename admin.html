@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - House Of Beta</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="logo">House Of Beta</a>
+    <nav>
+        <a href="index.html">Ana Sayfa</a>
+        <a href="admin.html">Admin Panel</a>
+    </nav>
+</header>
+
+<section class="section">
+    <div class="section-header">
+        <h2>Admin Panel - Ürün Yönetimi</h2>
+    </div>
+
+    <!-- Ürün Ekleme Formu -->
+    <div style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <h3>Yeni Ürün Ekle</h3>
+        <form id="add-product-form">
+            <input type="text" id="product-name" placeholder="Ürün Adı (ör: Beta Oversize Tee)" required>
+            <input type="number" id="product-price" placeholder="Fiyat (ör: 1299)" required>
+            <input type="text" id="product-image" placeholder="Resim Yolu (ör: 4.png)" required>
+            <input type="text" id="product-desc" placeholder="Kısa Açıklama">
+            <button type="submit" class="btn" style="margin-top: 20px;">Ürün Ekle</button>
+        </form>
+    </div>
+
+    <!-- Mevcut Ürünler -->
+    <div style="max-width: 1200px; margin: 60px auto;">
+        <h3>Mevcut Ürünler</h3>
+        <div id="product-list" class="product-grid"></div>
+    </div>
+</section>
+
+<script>
+    // Ürünleri localStorage'dan yükle
+    let products = JSON.parse(localStorage.getItem('products')) || [
+        { id: 1, name: "Beta Core Hoodie", price: 1499, image: "1.png", desc: "Premium kapüşonlu hoodie" },
+        { id: 2, name: "Oversize Sweat", price: 1399, image: "2.png", desc: "Rahat oversize sweatshirt" },
+        { id: 3, name: "Minimal Crewneck", price: 1299, image: "3.png", desc: "Minimal logo detaylı crewneck" }
+    ];
+
+    function saveProducts() {
+        localStorage.setItem('products', JSON.stringify(products));
+    }
+
+    function renderProducts() {
+        const list = document.getElementById('product-list');
+        list.innerHTML = '';
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <div class="product-info">
+                    <span>${product.name}</span>
+                    <strong>${product.price} ₺</strong>
+                    <p>${product.desc || ''}</p>
+                    <button onclick="deleteProduct(${product.id})" class="btn" style="background: #ff3b3b; color: white;">Sil</button>
+                </div>
+            `;
+            list.appendChild(card);
+        });
+    }
+
+    document.getElementById('add-product-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('product-name').value;
+        const price = Number(document.getElementById('product-price').value);
+        const image = document.getElementById('product-image').value;
+        const desc = document.getElementById('product-desc').value;
+
+        const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+        products.push({ id: newId, name, price, image, desc });
+        saveProducts();
+        renderProducts();
+        alert('Ürün eklendi!');
+        document.getElementById('add-product-form').reset();
+    });
+
+    function deleteProduct(id) {
+        if (confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
+            products = products.filter(p => p.id !== id);
+            saveProducts();
+            renderProducts();
+            alert('Ürün silindi!');
+        }
+    }
+
+    // Sayfa yüklendiğinde ürünleri göster
+    renderProducts();
+</script>
+
+</body>
+</html>

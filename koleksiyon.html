@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksiyon | House Of Beta</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="logo">House Of Beta</a>
+    <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="koleksiyon.html">Koleksiyon</a>
+        <a href="urunler.html">Ürünler</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="sepet.html" class="cart-icon">
+            Sepet <span id="cart-count">0</span>
+        </a>
+    </nav>
+</header>
+
+<section class="section">
+    <div class="section-header">
+        <h2>Koleksiyon</h2>
+        <p>Şehrin ritmine uygun, zamansız tasarımlar</p>
+    </div>
+
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="1.png" alt="Urban Hoodie">
+            <div class="product-info">
+                <span>Urban Hoodie</span>
+                <strong>1.499 ₺</strong>
+                <a href="betahoodie.html" class="btn">Detayları Gör</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="2.png" alt="Street Sweatshirt">
+            <div class="product-info">
+                <span>Street Sweatshirt</span>
+                <strong>1.399 ₺</strong>
+                <a href="urunoversizesweat.html" class="btn">Detayları Gör</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="3.png" alt="Minimal Crewneck">
+            <div class="product-info">
+                <span>Minimal Crewneck</span>
+                <strong>1.299 ₺</strong>
+                <a href="urunminimalcrewnack.html" class="btn">Detayları Gör</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2025 House Of Beta — Tüm hakları saklıdır.</p>
+    <img src="Renzz.PNG" alt="İmza" class="signature">
+</footer>
+
+<script>
+    // Navbar scroll efekti
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Sepet sayısı gösterimi
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) cartCountElement.textContent = count;
+    }
+    updateCartCount();
+</script>
+
+</body>
+</html>

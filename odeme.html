@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme | House Of Beta</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="logo">House Of Beta</a>
+    <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="koleksiyon.html">Koleksiyon</a>
+        <a href="urunler.html">Ürünler</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="sepet.html" class="cart-icon">
+            Sepet <span id="cart-count">0</span>
+        </a>
+    </nav>
+</header>
+
+<section class="section">
+    <div class="section-header">
+        <h2>Ödeme</h2>
+        <p>Siparişini tamamlamak için son adımlar</p>
+    </div>
+
+    <div class="cart-grid" style="grid-template-columns: 2fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto;">
+        <!-- Sol: Teslimat ve Ödeme Bilgileri -->
+        <div class="checkout-form">
+            <h3>Teslimat Bilgileri</h3>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label>Ad Soyad</label>
+                    <input type="text" id="fullName" required placeholder="Ad Soyad">
+                </div>
+                <div class="form-group">
+                    <label>Telefon</label>
+                    <input type="tel" id="phone" required placeholder="0555 123 45 67">
+                </div>
+                <div class="form-group">
+                    <label>Adres</label>
+                    <textarea id="address" required placeholder="Mahalle, Sokak, No, Daire"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Şehir / İl</label>
+                    <input type="text" id="city" required placeholder="İstanbul">
+                </div>
+
+                <h3>Ödeme Yöntemi</h3>
+                <div class="payment-options">
+                    <label>
+                        <input type="radio" name="payment" value="kredi-karti" checked>
+                        Kredi Kartı / Banka Kartı
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="havale">
+                        Havale / EFT
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="kapida">
+                        Kapıda Ödeme
+                    </label>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; margin-top: 30px; font-size: 18px; padding: 18px;">
+                    Ödemeyi Tamamla
+                </button>
+            </form>
+        </div>
+
+        <!-- Sağ: Sipariş Özeti -->
+        <div class="cart-total">
+            <h3>Sipariş Özeti</h3>
+            <div id="cart-items-summary"></div>
+            <p>Ürünler: <span id="subtotal">0 ₺</span></p>
+            <p>Kargo: <span>Ücretsiz</span></p>
+            <p><strong>Toplam: <span id="total">0 ₺</span></strong></p>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2025 House Of Beta — Tüm hakları saklıdır.</p>
+    <img src="Renzz.PNG" alt="İmza" class="signature">
+</footer>
+
+<script>
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Sepet sayısı
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) cartCountElement.textContent = count;
+    }
+    updateCartCount();
+
+    // Sipariş özetini göster
+    function renderOrderSummary() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const summaryDiv = document.getElementById('cart-items-summary');
+        summaryDiv.innerHTML = '';
+        let subtotal = 0;
+
+        cart.forEach(item => {
+            subtotal += item.price * item.quantity;
+            const itemDiv = document.createElement('div');
+            itemDiv.style.marginBottom = '15px';
+            itemDiv.innerHTML = `
+                <p><strong>${item.name} (${item.size}) × ${item.quantity}</strong></p>
+                <p>${(item.price * item.quantity).toLocaleString('tr-TR')} ₺</p>
+            `;
+            summaryDiv.appendChild(itemDiv);
+        });
+
+        document.getElementById('subtotal').textContent = subtotal.toLocaleString('tr-TR') + ' ₺';
+        document.getElementById('total').textContent = subtotal.toLocaleString('tr-TR') + ' ₺';
+
+        if (cart.length === 0) {
+            summaryDiv.innerHTML = '<p style="color: #999;">Sepetiniz boş.</p>';
+        }
+    }
+    renderOrderSummary();
+
+    // Form gönderme (ödeme entegrasyonu burada olacak)
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const fullName = document.getElementById('fullName').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+        if (!fullName || !phone || !address || !city) {
+            alert('Lütfen tüm alanları doldurun.');
+            return;
+        }
+
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length === 0) {
+            alert('Sepetiniz boş.');
+            return;
+        }
+
+        // Ödeme entegrasyonu burada başlar (iyzico/PayTR)
+        alert(`Siparişiniz alındı! \n\nAd: ${fullName}\nTelefon: ${phone}\nAdres: ${address}, ${city}\nÖdeme: ${paymentMethod}\n\nToplam: ${document.getElementById('total').textContent}`);
+
+        // Başarılı olursa sepeti temizle
+        localStorage.removeItem('cart');
+        window.location.href = 'index.html'; // Teşekkür sayfasına veya ana sayfaya yönlendir
+    });
+</script>
+
+</body>
+</html>

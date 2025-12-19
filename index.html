@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Of Beta | Premium Sokak Modası</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="logo">House Of Beta</a>
+    <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="koleksiyon.html">Koleksiyon</a>
+        <a href="urunler.html">Ürünler</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="sepet.html" class="cart-icon">
+            Sepet <span id="cart-count">0</span>
+        </a>
+        <a href="admin.html">Admin</a> <!-- Admin paneline hızlı erişim -->
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Tarz<br>Bir<br>Duruş</h1>
+        <p>Minimal tasarım, premium kalite ve şehir ruhu.</p>
+        <a href="koleksiyon.html" class="btn">Koleksiyonu Keşfet</a>
+    </div>
+</section>
+
+<section class="section products">
+    <div class="section-header">
+        <h2>Öne Çıkan Ürünler</h2>
+        <p>Günlük stilin için tasarlandı</p>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+        <!-- Ürünler JavaScript ile buraya eklenecek -->
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2025 House Of Beta — Tüm hakları saklıdır.</p>
+    <img src="Renzz.PNG" alt="İmza" class="signature">
+</footer>
+
+<script>
+    // Navbar scroll efekti
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Ürünleri localStorage'dan çek ve göster
+    function loadProducts() {
+        const products = JSON.parse(localStorage.getItem('products')) || [
+            { id: 1, name: "Beta Core Hoodie", price: 1499, image: "1.png", desc: "Premium kapüşonlu hoodie" },
+            { id: 2, name: "Oversize Sweat", price: 1399, image: "2.png", desc: "Rahat oversize sweatshirt" },
+            { id: 3, name: "Minimal Crewneck", price: 1299, image: "3.png", desc: "Minimal logo detaylı crewneck" }
+        ];
+
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = ''; // Önceki içeriği temizle
+
+        products.forEach(product => {
+            const card = `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="product-info">
+                        <span>${product.name}</span>
+                        <strong>${product.price} ₺</strong>
+                        <a href="urun-detay.html?id=${product.id}" class="btn">Detayları Gör</a>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += card;
+        });
+    }
+
+    // Sepet sayısı güncelleme
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = count;
+        }
+    }
+
+    // Sayfa yüklendiğinde çalıştır
+    loadProducts();
+    updateCartCount();
+
+    // Ürün ekleme/silme sonrası sayfa yenilendiğinde otomatik güncellenir
+    window.addEventListener('storage', () => {
+        loadProducts();
+        updateCartCount();
+    });
+</script>
+
+</body>
+</html>

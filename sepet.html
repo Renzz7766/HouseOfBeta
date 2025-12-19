@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepet | House Of Beta</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="logo">House Of Beta</a>
+    <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="koleksiyon.html">Koleksiyon</a>
+        <a href="urunler.html">Ürünler</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="sepet.html" class="cart-icon">
+            Sepet <span id="cart-count">0</span>
+        </a>
+    </nav>
+</header>
+
+<section class="section">
+    <div class="section-header">
+        <h2>Sepetiniz</h2>
+        <p>Seçtiğiniz ürünler burada</p>
+    </div>
+
+    <div class="cart-grid" id="cart-content">
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-total">
+            <h3>Sipariş Özeti</h3>
+            <p>Ürünler: <span id="subtotal">0 ₺</span></p>
+            <p>Kargo: <span>Ücretsiz</span></p>
+            <p><strong>Toplam: <span id="total">0 ₺</span></strong></p>
+            <!-- Sepet toplam kısmının en altına -->
+            <button class="btn" onclick="window.location.href='odeme.html'">Ödemeye Geç</button>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2025 House Of Beta — Tüm hakları saklıdır.</p>
+    <img src="Renzz.PNG" alt="İmza" class="signature">
+</footer>
+
+<script>
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    function renderCart() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItems = document.getElementById('cart-items');
+        cartItems.innerHTML = '';
+
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p style="text-align:center; font-size:1.3rem;">Sepetiniz boş.</p>';
+            document.getElementById('subtotal').textContent = '0 ₺';
+            document.getElementById('total').textContent = '0 ₺';
+            return;
+        }
+
+        let subtotal = 0;
+        cart.forEach((item, index) => {
+            subtotal += item.price * item.quantity;
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item';
+            itemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <h3>${item.name} (${item.size})</h3>
+                    <p>${item.price} ₺</p>
+                    <div class="cart-item-controls">
+                        <button onclick="changeQuantity(${index}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="changeQuantity(${index}, 1)">+</button>
+                        <button onclick="removeFromCart(${index})" style="background:#ff3b3b; color:white;">Sil</button>
+                    </div>
+                </div>
+            `;
+            cartItems.appendChild(itemDiv);
+        });
+
+        document.getElementById('subtotal').textContent = subtotal.toLocaleString('tr-TR') + ' ₺';
+        document.getElementById('total').textContent = subtotal.toLocaleString('tr-TR') + ' ₺';
+        updateCartCount();
+    }
+
+    function changeQuantity(index, delta) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart[index].quantity += delta;
+        if (cart[index].quantity < 1) cart[index].quantity = 1;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function removeFromCart(index) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cart-count').textContent = count;
+    }
+
+    renderCart();
+</script>
+
+</body>
+</html>

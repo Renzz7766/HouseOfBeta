@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim | House Of Beta</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="logo">House Of Beta</a>
+    <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="koleksiyon.html">Koleksiyon</a>
+        <a href="urunler.html">Ürünler</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+    </nav>
+</header>
+
+<section class="section" id="iletisim">
+    <div class="section-header">
+        <h1>İletişim</h1>
+        <p>Bize ulaşmaktan çekinmeyin</p>
+    </div>
+
+    <div style="text-align: center; font-size: 1.4rem; line-height: 2; max-width: 600px; margin: 0 auto;">
+        <p><strong>E-posta:</strong> info@houseofbeta.com</p>
+        <p><strong>Instagram:</strong> <a href="https://instagram.com/houseof.beta" target="_blank" style="color: #ff3b3b; text-decoration: none;">@houseofbeta</a></p>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2025 House Of Beta — Tüm hakları saklıdır.</p>
+    <img src="Renzz.PNG" alt="İmza" class="signature">
+</footer>
+
+<script>
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    // Navbar scroll efekti
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Sepet sayısı gösterimi
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cart-count').textContent = count;
+    }
+    updateCartCount();
+</script>
+
+</body>
+</html>

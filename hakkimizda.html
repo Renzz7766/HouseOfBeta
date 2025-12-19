@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımızda | House Of Beta</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="logo">House Of Beta</a>
+    <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="koleksiyon.html">Koleksiyon</a>
+        <a href="urunler.html">Ürünler</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+    </nav>
+</header>
+
+<section class="section" id="hakkimizda">
+    <div class="section-header">
+        <h1>House Of Beta</h1>
+        <h2>Tarzın ve Kalitenin Buluşma Noktası</h2>
+    </div>
+
+    <p>House of Beta, şehir yaşamının dinamizmini ve sokak modasının ruhunu birleştiren modern bir giyim markasıdır.</p>
+    <p>Her tasarımımız, sade çizgilerle yüksek kaliteyi buluşturmayı hedefler ve kendine güvenen bireylerin stilini tamamlar.</p>
+    <p>Amacımız sadece kıyafet üretmek değil, aynı zamanda bir yaşam tarzını temsil etmektir.</p>
+    <p>House of Beta koleksiyonları, minimal detayları, zamansız kesimleri ve premium malzemeleriyle hem günlük kullanım hem de özel anlar için idealdir.</p>
+    <p>Markamız, özgünlük ve yaratıcılığı ön planda tutar; her parça, kalite ve estetiğin birleştiği bir hikaye anlatır.</p>
+    <p>House of Beta ile her gününüzü stil sahibi ve kendine güvenen bir duruşla karşılayın.</p>
+</section>
+
+<footer class="footer">
+    <p>© 2025 House Of Beta — Tüm hakları saklıdır.</p>
+    <img src="./resimler/Renzz.PNG" alt="İmza" class="signature">
+</footer>
+
+<script>
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    // Navbar scroll efekti
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Sepet sayısı gösterimi
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cart-count').textContent = count;
+    }
+    updateCartCount();
+</script>
+
+</body>
+</html>
